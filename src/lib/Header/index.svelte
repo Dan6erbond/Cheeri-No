@@ -26,7 +26,7 @@
           />
         </g>
       </svg>
-      GitHub
+      <span>GitHub</span>
     </a>
   </div>
 </header>
