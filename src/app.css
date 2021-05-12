@@ -19,13 +19,6 @@
 body {
   min-height: 100vh;
   margin: 0;
-  background-color: var(--primary-color);
-  background: linear-gradient(
-    180deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 10.45%,
-    var(--tertiary-color) 41.35%
-  );
 }
 
 body::before {
@@ -36,11 +29,6 @@ body::before {
   top: 0;
   left: 10vw;
   z-index: -1;
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    var(--pure-white) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
   opacity: 0.05;
 }
 
