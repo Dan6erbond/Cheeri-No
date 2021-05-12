@@ -8,7 +8,7 @@
 
 <section />
 
-<style>
+<style style lang="postcss">
   section {
     display: flex;
     flex-direction: column;
