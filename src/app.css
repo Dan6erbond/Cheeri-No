@@ -1,7 +1,8 @@
 @import "@fontsource/fira-mono";
+@import "@fontsource/inter";
 
-:root {
-  font-family: Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+:root  {
+  font-family: "Inter", Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
     Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   --font-mono: "Fira Mono", monospace;
   --pure-white: #ffffff;

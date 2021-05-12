@@ -1,4 +1,5 @@
 const { tailwindExtractor } = require("tailwindcss/lib/lib/purgeUnusedStyles");
+const { fontFamily } = require("tailwindcss/defaultTheme");
 
 module.exports = {
   mode: "aot",
@@ -17,10 +18,17 @@ module.exports = {
     safelist: [/^svelte-[\d\w]+$/],
   },
   theme: {
+    fontFamily: {
+      sans: ["Oswald", ...fontFamily.sans],
+      serif: [...fontFamily.serif],
+      mono: ["Fira Mono", ...fontFamily.mono],
+    },
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      animation: ["hover", "focus"],
+    },
   },
   plugins: [],
 };

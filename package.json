@@ -30,6 +30,8 @@
   "type": "module",
   "dependencies": {
     "@fontsource/fira-mono": "^4.2.2",
+    "@fontsource/inter": "^4.3.0",
+    "@fontsource/oswald": "^4.3.0",
     "@lukeed/uuid": "^2.0.0",
     "cookie": "^0.4.1"
   }
