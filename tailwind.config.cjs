@@ -1,5 +1,6 @@
 const { tailwindExtractor } = require("tailwindcss/lib/lib/purgeUnusedStyles");
 const { fontFamily } = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   mode: "aot",
@@ -23,11 +24,25 @@ module.exports = {
       serif: [...fontFamily.serif],
       mono: ["Fira Mono", ...fontFamily.mono],
     },
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      black: colors.black,
+      white: colors.white,
+      gray: colors.trueGray,
+      "cool-gray": colors.blueGray,
+      blue: colors.blue,
+      indigo: colors.indigo,
+      red: colors.rose,
+      orange: colors.orange,
+      yellow: colors.amber,
+    },
     extend: {},
   },
   variants: {
     extend: {
       animation: ["hover", "focus"],
+      translate: ["hover", "focus"],
     },
   },
   plugins: [],
