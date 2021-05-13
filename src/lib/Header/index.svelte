@@ -3,17 +3,42 @@
   import logo from "./logo.svg";
 </script>
 
-<header>
+<header class="p-4 px-12 flex items-center justify-between border-b border-gray-300 bg-white">
   <div class="corner">
-    <a href="https://kit.svelte.dev">
+    <a href="/">
       <img src={logo} alt="SvelteKit" class="w-28" />
     </a>
   </div>
 
-  <nav>{$page.path}</nav>
+  <nav class="hidden justify-center md:flex">
+    <a
+      href="/submit"
+      class="flex items-center hover:no-underline hover:bg-orange-50 transition-colors p-2 rounded"
+      class:bg-orange-50={$page.path === "/submit"}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+        />
+      </svg>
+      <span>Submit a Company</span>
+    </a>
+  </nav>
 
   <div class="corner">
-    <a href="https://github.com/Dan6erbond/Cheeri-No" class="transition-colors hover:text-red-700 flex hover:no-underline">
+    <a
+      href="https://github.com/Dan6erbond/Cheeri-No"
+      class="transition-colors hover:text-red-700 flex hover:no-underline"
+    >
       <svg viewBox="0 0 128 128" class="h-6 w-6 mr-2">
         <g fill="currentColor">
           <path
@@ -32,15 +57,7 @@
 </header>
 
 <style lang="postcss">
-  header {
-    @apply p-4 px-12 flex justify-between border-b border-gray-300 bg-white;
-  }
-
   .corner {
     @apply flex items-center justify-center;
-  }
-
-  nav {
-    @apply flex justify-center;
   }
 </style>
