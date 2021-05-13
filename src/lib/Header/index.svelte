@@ -33,7 +33,7 @@
 
 <style lang="postcss">
   header {
-    @apply p-4 px-16 flex justify-between border-b border-gray-300 bg-white;
+    @apply p-4 px-12 flex justify-between border-b border-gray-300 bg-white;
   }
 
   .corner {
