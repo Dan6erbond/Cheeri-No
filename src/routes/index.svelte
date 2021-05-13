@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-  <title>Cheeri-No</title>
+  <title>Home | Cheeri-No</title>
 </svelte:head>
 
 <section>
