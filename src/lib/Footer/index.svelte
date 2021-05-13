@@ -3,7 +3,7 @@
 </script>
 
 <footer
-  class="flex bg-white border-t border-gray-300 left-0 bottom-0 right-0 absolute p-4 transition-transform transform md:translate-y-56 justify-center"
+  class="flex bg-white border-t border-gray-300 left-0 bottom-0 right-0 fixed p-4 transition-transform transform md:translate-y-56 justify-center"
 >
   <a
     href="/submit"
