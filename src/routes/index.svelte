@@ -89,7 +89,7 @@
     <div class="flex flex-col -mb-6 justify-items-stretch w-full">
       {#each Array(10) as _, idx (idx)}
         <div
-          class="border border-gray-200 mb-6 transform hover:-translate-y-1 transition-transform bg-white rounded-md overflow-hidden"
+          class="shadow-lg mb-6 transform hover:-translate-y-1 transition-transform bg-white rounded-md overflow-hidden"
         >
           <div class="flex">
             <div>
@@ -165,7 +165,7 @@
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
       {#each Array(10) as _, idx (idx)}
         <div
-          class="border border-gray-200 transform hover:-translate-y-1 transition-transform bg-white rounded-md overflow-hidden"
+          class="shadow-lg transform hover:-translate-y-1 transition-transform bg-white rounded-md overflow-hidden"
         >
           <div class="flex flex-col">
             <div>
