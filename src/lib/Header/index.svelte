@@ -3,7 +3,7 @@
   import logo from "./logo.svg";
 </script>
 
-<header class="p-4 px-12 flex items-center justify-between border-b border-gray-300 bg-white">
+<header class="p-4 px-4 md:px-8 lg:px-12 flex items-center justify-between border-b border-gray-300 bg-white">
   <div class="corner">
     <a href="/">
       <img src={logo} alt="SvelteKit" class="w-28" />
@@ -30,7 +30,7 @@
           d="M12 6v6m0 0v6m0-6h6m-6 0H6"
         />
       </svg>
-      <span>Submit a Company</span>
+      <span class="mr-2">Submit a Company</span>
     </a>
   </nav>
 
@@ -38,6 +38,7 @@
     <a
       href="https://github.com/Dan6erbond/Cheeri-No"
       class="transition-colors hover:text-red-700 flex hover:no-underline"
+      target="_blank"
     >
       <svg viewBox="0 0 128 128" class="h-6 w-6 mr-2">
         <g fill="currentColor">
