@@ -1,7 +1,7 @@
 @import "@fontsource/fira-mono";
 @import "@fontsource/inter";
 
-:root  {
+:root {
   font-family: "Inter", Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
     Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   --font-mono: "Fira Mono", monospace;
@@ -15,6 +15,24 @@
   --background-without-opacity: rgba(255, 255, 255, 0.7);
   --column-width: 42rem;
   --column-margin-top: 4rem;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c7c7c7;
+  border-radius: 24px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a1a1a1;
+  border-radius: 24px;
 }
 
 body {
