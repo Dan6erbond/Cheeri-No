@@ -5,3 +5,15 @@
 body {
   /* @apply bg-cool-gray-100; */
 }
+
+.input {
+  @apply px-3 py-2 rounded border-gray-100 border;
+}
+
+.input:focus, .input:focus-visible {
+  @apply outline-none border-none ring ring-orange-200;
+}
+
+.input.filled {
+  @apply bg-gray-100;
+}
