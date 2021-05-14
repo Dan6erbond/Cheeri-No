@@ -1,0 +1,18 @@
+<script lang="ts">
+  import { fly, fade } from "svelte/transition";
+</script>
+
+<!-- This element is to trick the browser into centering the modal contents. -->
+<span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"> &#8203; </span>
+<div
+  in:fly
+  out:fade
+  class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+>
+  <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+    <div class="sm:flex sm:items-start">
+      <slot />
+    </div>
+  </div>
+  <slot name="footer" />
+</div>
