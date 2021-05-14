@@ -36,6 +36,7 @@ module.exports = {
       red: colors.rose,
       orange: colors.orange,
       yellow: colors.amber,
+      pink: colors.pink,
     },
     extend: {},
   },
@@ -43,6 +44,8 @@ module.exports = {
     extend: {
       animation: ["hover", "focus"],
       translate: ["hover", "focus"],
+      ringWidth: ["hover", "active"],
+      ringColor: ["hover", "active"],
     },
   },
   plugins: [],
