@@ -1,8 +1,10 @@
 <script lang="ts">
-  import Header from "$lib/Header/index.svelte";
+  import BottomNav from "$lib/BottomNav/index.svelte";
   import Footer from "$lib/Footer/index.svelte";
+  import Header from "$lib/Header/index.svelte";
   import "../app.css";
   import "../app.postcss";
+
 </script>
 
 <Header />
@@ -12,6 +14,8 @@
 </main>
 
 <Footer />
+
+<BottomNav />
 
 <style lang="postcss">
   main {
