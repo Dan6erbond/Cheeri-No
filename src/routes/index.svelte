@@ -1,3 +1,7 @@
+<script context="module">
+  export const hydrate = true;
+</script>
+
 <script lang="ts">
   import CompanyCard from "$lib/Company/CompanyCard.svelte";
 
