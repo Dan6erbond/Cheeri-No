@@ -35,6 +35,14 @@
   border-radius: 24px;
 }
 
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  width: 12px;
+}
+
 body {
   min-height: 100vh;
   margin: 0;
