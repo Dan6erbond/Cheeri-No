@@ -1,7 +1,19 @@
+<script lang="ts">
+  import clsx from "clsx";
+</script>
+
 <div
-  class="shadow-lg mb-6 transform hover:-translate-y-1 transition-transform bg-white rounded-md overflow-hidden"
+  class={clsx(
+    "shadow-lg",
+    "mb-6",
+    "transform",
+    "hover:-translate-y-1",
+    "transition-transform",
+    "rounded-md",
+    "overflow-hidden",
+  )}
 >
-  <div class="flex">
+  <div class="flex bg-white">
     <div class="flex flex-col flex-grow">
       <div class="p-10">
         <h3 class="text-xl mb-4">Nestlé</h3>
