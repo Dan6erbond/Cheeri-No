@@ -83,7 +83,7 @@
     </div>
 
     <p class="mb-4 font-bold">Please provide us with a source.</p>
-    <input type="url" placeholder="Source" class="input mb-4" />
+    <input type="url" placeholder="Source" class="input mb-4 w-full" />
     <div class="text-gray-600 border-l-2 border-gray-300 pl-2 text-sm flex mb-8">
       <svg
         xmlns="http://www.w3.org/2000/svg"
