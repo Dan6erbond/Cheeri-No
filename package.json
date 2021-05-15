@@ -29,6 +29,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@bytemd/plugin-gfm": "^1.9.2",
     "@fontsource/fira-mono": "^4.2.2",
     "@fontsource/inter": "^4.3.0",
     "@fontsource/oswald": "^4.3.0",

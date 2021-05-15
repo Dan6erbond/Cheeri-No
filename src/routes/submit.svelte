@@ -7,35 +7,21 @@
   import "bytemd/dist/index.min.css";
   import clsx from "clsx";
   import { onMount } from "svelte";
+  import gfm from "@bytemd/plugin-gfm";
 
   export const hydrate = true;
 </script>
 
 <script lang="ts">
-  let source = `# H1 heading
+  const plugins = [
+    gfm(),
+    // Add more plugins here
+  ];
 
-## H2 heading
-
-### H3 heading
-
---------
-
-**bold text**
-
-*italicized text*
-
---------
-
-1. First item
-2. Second item
-3. Third item
-
-- First item
-- Second item
-- Third item
-
-[Svelte](https://svelte.dev/)
-`;
+  let companyName: string;
+  let parentCompany: string = null;
+  let reason: string;
+  let source: string;
   let showModal = false;
 
   let Editor;
@@ -45,11 +31,11 @@
   });
 
   function handleSubmit() {
-    console.log(source);
+    console.log(reason);
   }
 
   function handleChange(e) {
-    source = e.detail.value;
+    reason = e.detail.value;
   }
 </script>
 
@@ -62,7 +48,7 @@
     <h1 class="text-2xl mb-4">Submit a new Company</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-      <input type="text" placeholder="Company Name" class="input" />
+      <input type="text" placeholder="Company Name" class="input" bind:value={companyName} />
 
       <div class="input flex items-center">
         <input
@@ -72,20 +58,22 @@
           class="focus:outline-none flex-grow"
           on:click={() => (showModal = true)}
         />
-        <button class="text-gray-400">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </button>
+        {#if parentCompany}
+          <button class="text-gray-400" on:click={() => (parentCompany = null)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        {/if}
       </div>
     </div>
 
@@ -93,14 +81,15 @@
       <p class="mb-4 font-bold">Reason</p>
       <svelte:component
         this={Editor}
-        value={source}
+        value={reason}
         on:change={handleChange}
         placeholder="Reason"
+        {plugins}
       />
     </div>
 
     <p class="mb-4 font-bold">Please provide us with a source.</p>
-    <input type="url" placeholder="Source" class="input mb-4 w-full" />
+    <input type="url" placeholder="Source" class="input mb-4 w-full" bind:value={source} />
     <div class="text-gray-600 border-l-2 border-gray-300 pl-2 text-sm flex mb-8">
       <svg
         xmlns="http://www.w3.org/2000/svg"
