@@ -33,6 +33,7 @@
     "@fontsource/inter": "^4.3.0",
     "@fontsource/oswald": "^4.3.0",
     "@lukeed/uuid": "^2.0.0",
+    "bytemd": "^1.9.2",
     "clsx": "^1.1.1",
     "cookie": "^0.4.1",
     "marked": "^2.0.3"

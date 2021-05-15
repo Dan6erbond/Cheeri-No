@@ -13,6 +13,12 @@ const config = {
   kit: {
     // hydrate the <div id="svelte"> element in src/app.html
     target: "#svelte",
+    vite: {
+      optimizeDeps: {
+        include: ["lodash", "rehype-sanitize", "lodash.debounce", "unified"],
+        exclude: ["rehype-raw"],
+      },
+    },
   },
 };
 

@@ -4,13 +4,16 @@
   import ModalContent from "$lib/Modal/ModalContent.svelte";
   import ModalFooter from "$lib/Modal/ModalFooter.svelte";
   import ModalOverlay from "$lib/Modal/ModalOverlay.svelte";
-  import marked from "marked";
+  import "bytemd/dist/index.min.css";
   import clsx from "clsx";
+  import marked from "marked";
 
   export const hydrate = true;
 </script>
 
 <script lang="ts">
+  import { onMount } from "svelte";
+
   let source = `
 # H1 heading
 
@@ -40,8 +43,18 @@
 
   let showModal = false;
 
+  let Editor;
+  onMount(async () => {
+    const module = await import("bytemd");
+    Editor = module.Editor;
+  });
+
   function handleSubmit() {
     console.log(source);
+  }
+
+  function handleChange(e) {
+    source = e.detail.value;
   }
 </script>
 
@@ -80,6 +93,8 @@
         </button>
       </div>
     </div>
+
+    <svelte:component this={Editor} {source} on:change={handleChange} />
 
     <div class="flex w-full mb-8">
       <div class="flex-1 flex flex-col">
