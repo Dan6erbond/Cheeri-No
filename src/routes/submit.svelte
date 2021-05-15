@@ -6,17 +6,13 @@
   import ModalOverlay from "$lib/Modal/ModalOverlay.svelte";
   import "bytemd/dist/index.min.css";
   import clsx from "clsx";
-  import marked from "marked";
-  import MarkdownEditor from "$lib/MarkdownEditor/index.svelte";
+  import { onMount } from "svelte";
 
   export const hydrate = true;
 </script>
 
 <script lang="ts">
-  import { onMount } from "svelte";
-
-  let source = `
-# H1 heading
+  let source = `# H1 heading
 
 ## H2 heading
 
@@ -93,9 +89,15 @@
       </div>
     </div>
 
-    <svelte:component this={Editor} {source} on:change={handleChange} />
-
-    <MarkdownEditor bind:value={source} />
+    <div class="mb-8">
+      <p class="mb-4 font-bold">Reason</p>
+      <svelte:component
+        this={Editor}
+        value={source}
+        on:change={handleChange}
+        placeholder="Reason"
+      />
+    </div>
 
     <p class="mb-4 font-bold">Please provide us with a source.</p>
     <input type="url" placeholder="Source" class="input mb-4 w-full" />
