@@ -13,8 +13,8 @@
     "to-yellow-500",
     "p-4",
     "items-center",
-    "pb-20",
-    "md:pb-4",
+    "pb-16",
+    "md:pb-2",
   )}
 >
   <span class="mb-2">Built with ❤ by RaviAnand Mohabir</span>
