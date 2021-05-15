@@ -46,6 +46,8 @@ module.exports = {
       translate: ["hover", "focus"],
       ringWidth: ["hover", "active"],
       ringColor: ["hover", "active"],
+      backgroundColor: ["checked"],
+      borderColor: ["checked"],
     },
   },
   plugins: [],

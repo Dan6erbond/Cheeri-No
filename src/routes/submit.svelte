@@ -22,6 +22,7 @@
   let parentCompany: string = null;
   let reason: string;
   let source: string;
+  let anonymous = true;
   let showModal = false;
 
   let Editor;
@@ -90,10 +91,10 @@
 
     <p class="mb-4 font-bold">Please provide us with a source.</p>
     <input type="url" placeholder="Source" class="input mb-4 w-full" bind:value={source} />
-    <div class="text-gray-600 border-l-2 border-gray-300 pl-2 text-sm flex mb-8">
+    <div class="text-gray-600 border-l-2 border-gray-300 pl-2 text-sm flex mb-8 space-x-2">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 mr-2"
+        class="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -111,7 +112,25 @@
       </span>
     </div>
 
-    <div class="flex flex-row-reverse">
+    <div class="flex justify-between">
+      <label for="anonymous" class="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          id="anonymous"
+          class={clsx(
+            "h-4",
+            "w-4",
+            "border",
+            "border-gray-300",
+            "rounded-lg",
+            "checked:bg-orange-500",
+            "checked:border-transparent",
+            "focus:outline-none",
+          )}
+          bind:checked={anonymous}
+        />
+        <span class="text-gray-900 font-medium text-sm">Post Anonymously</span>
+      </label>
       <button
         type="submit"
         class={clsx(
