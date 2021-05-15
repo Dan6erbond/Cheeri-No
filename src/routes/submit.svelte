@@ -7,6 +7,7 @@
   import "bytemd/dist/index.min.css";
   import clsx from "clsx";
   import marked from "marked";
+  import MarkdownEditor from "$lib/MarkdownEditor/index.svelte";
 
   export const hydrate = true;
 </script>
@@ -39,8 +40,6 @@
 
 [Svelte](https://svelte.dev/)
 `;
-  let markdown = marked(source);
-
   let showModal = false;
 
   let Editor;
@@ -96,22 +95,7 @@
 
     <svelte:component this={Editor} {source} on:change={handleChange} />
 
-    <div class="flex w-full mb-8">
-      <div class="flex-1 flex flex-col">
-        <p class="font-bold mb-2">Reason</p>
-        <textarea
-          bind:value={source}
-          class="flex-grow border input text-gray-800 p-4 focus:outline-none"
-        />
-      </div>
-
-      <div class="w-4" />
-
-      <div class="flex-1">
-        <p class="font-bold mb-2">Preview</p>
-        <div class="px-4">{@html markdown}</div>
-      </div>
-    </div>
+    <MarkdownEditor bind:value={source} />
 
     <p class="mb-4 font-bold">Please provide us with a source.</p>
     <input type="url" placeholder="Source" class="input mb-4 w-full" />
