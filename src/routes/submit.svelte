@@ -6,17 +6,12 @@
   import ModalOverlay from "$lib/Modal/ModalOverlay.svelte";
   import "bytemd/dist/index.min.css";
   import clsx from "clsx";
-  import { onMount } from "svelte";
-  import gfm from "@bytemd/plugin-gfm";
 
   export const hydrate = true;
 </script>
 
 <script lang="ts">
-  const plugins = [
-    gfm(),
-    // Add more plugins here
-  ];
+  import ByteMd from "../lib/MarkdownEditor/ByteMD.svelte";
 
   let companyName: string;
   let parentCompany: string = null;
@@ -24,12 +19,6 @@
   let source: string;
   let anonymous = true;
   let showModal = false;
-
-  let Editor;
-  onMount(async () => {
-    const module = await import("bytemd");
-    Editor = module.Editor;
-  });
 
   function handleSubmit() {
     console.log(reason);
@@ -80,13 +69,7 @@
 
     <div class="mb-8">
       <p class="mb-4 font-bold">Reason</p>
-      <svelte:component
-        this={Editor}
-        value={reason}
-        on:change={handleChange}
-        placeholder="Reason"
-        {plugins}
-      />
+      <ByteMd value={reason} on:change={handleChange} />
     </div>
 
     <p class="mb-4 font-bold">Please provide us with a source.</p>
