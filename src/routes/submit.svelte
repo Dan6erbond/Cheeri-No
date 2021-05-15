@@ -149,6 +149,7 @@
         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
           Select Parent Company
         </h3>
+        <hr class="my-2 w-full">
         <div class="mt-2">
           {#each new Array(10) as _, idx (idx)}
             <div class="animate-pulse h-8 bg-gray-200 rounded mb-2" />
