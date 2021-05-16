@@ -64,7 +64,7 @@
   <div class="flex-grow" />
 
   <div class="flex items-center justify-center">
-    {#if $session.user}
+    {#if $session?.user}
       <a
         href="/profile"
         class={clsx(
