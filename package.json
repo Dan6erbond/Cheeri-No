@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@sveltejs/kit": "next",
+    "@types/jsonwebtoken": "^8.5.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "autoprefixer": "^10.2.5",
@@ -37,6 +38,7 @@
     "bytemd": "^1.9.2",
     "clsx": "^1.1.1",
     "cookie": "^0.4.1",
+    "jsonwebtoken": "^8.5.1",
     "marked": "^2.0.3"
   }
 }
