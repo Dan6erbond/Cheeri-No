@@ -18,5 +18,5 @@ export abstract class Provider<T extends ProviderConfig = ProviderConfig> {
 
   abstract callback<Locals extends Record<string, any> = Record<string, any>, Body = unknown>(
     request: ServerRequest<Locals, Body>,
-  ): [any, any];
+  ): [any, any, string | null] | Promise<[any, any, string | null]>;
 }

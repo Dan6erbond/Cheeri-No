@@ -16,7 +16,7 @@ interface AuthCallbacks {
   signIn: () => boolean | Promise<boolean>;
   jwt: (token: JWT, profile?: any, account?: any) => JWT | Promise<JWT>;
   session: (token: JWT) => Session | Promise<Session>;
-  redirect: () => string | Promise<string>;
+  redirect: (url: string) => string | Promise<string>;
 }
 
 export class Auth {
@@ -49,6 +49,10 @@ export class Auth {
     return token;
   }
 
+  getBaseUrl(host: string) {
+    return `http://${host}`;
+  }
+
   setToken(headers: Headers, newToken: JWT) {
     const originalToken = this.getToken(headers);
 
@@ -59,7 +63,7 @@ export class Auth {
   }
 
   get: RequestHandler = async (request) => {
-    const { path, headers } = request;
+    const { path, headers, host } = request;
 
     if (path === "/api/auth/csrf") {
       return { body: "1234" }; // TODO: Generate real token
@@ -75,10 +79,9 @@ export class Auth {
         if (match.groups.method === "signin") {
           return await provider.signin(request);
         } else {
-          const [profile, account] = await provider.callback(request);
+          const [profile, account, redirectUrl] = await provider.callback(request);
 
           let token: JWT;
-
           if (this.config?.callbacks?.jwt) {
             token = await this.config.callbacks.jwt(token, account, profile);
           } else {
@@ -89,9 +92,16 @@ export class Auth {
             expiresIn: this.config?.jwtExpiresIn ?? "30d",
           });
 
+          let redirect = redirectUrl || this.getBaseUrl(host);
+          if (this.config?.callbacks.redirect) {
+            redirect = await this.config.callbacks.redirect(redirect);
+          }
+
           return {
+            status: 302,
             headers: {
               "set-cookie": `svelteauthjwt=${jwt}; Path=/; HttpOnly`,
+              Location: redirect,
             },
           };
         }
