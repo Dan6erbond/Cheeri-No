@@ -1,7 +1,7 @@
 import type { EndpointOutput } from "@sveltejs/kit";
 import type { ServerRequest } from "@sveltejs/kit/types/endpoint";
 
-interface ProviderConfig {
+export interface ProviderConfig {
   id?: string;
 }
 
@@ -18,5 +18,5 @@ export abstract class Provider<T extends ProviderConfig = ProviderConfig> {
 
   abstract callback<Locals extends Record<string, any> = Record<string, any>, Body = unknown>(
     request: ServerRequest<Locals, Body>,
-  ): EndpointOutput | Promise<EndpointOutput>;
+  ): [any, any];
 }

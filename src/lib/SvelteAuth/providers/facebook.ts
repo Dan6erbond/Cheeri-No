@@ -88,6 +88,6 @@ export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
     const inspectResult = await this.inspectToken(tokens);
     const user = await this.getUserProfile(tokens, inspectResult);
 
-    return [tokens, user];
+    return [user, tokens];
   }
 }

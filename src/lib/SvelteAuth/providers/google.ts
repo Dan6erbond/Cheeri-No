@@ -102,6 +102,6 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
         : value;
     });
 
-    return [tokens, user];
+    return [user, tokens];
   }
 }
