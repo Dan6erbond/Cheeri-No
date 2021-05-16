@@ -1,11 +1,3 @@
-import { Auth } from "$lib/SvelteAuth";
-import { GoogleOAuthProvider } from "$lib/SvelteAuth/providers";
+import { appAuth } from "$lib/appAuth";
 
-export const { get } = new Auth({
-  providers: [
-    new GoogleOAuthProvider({
-      clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
-      clientSecret: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_SECRET,
-    }),
-  ],
-});
+export const { get } = appAuth;

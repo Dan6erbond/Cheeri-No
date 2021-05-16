@@ -1,16 +1,17 @@
 import type { ServerRequest } from "@sveltejs/kit/types/endpoint";
-import { Provider } from "./base";
+import { Provider, ProviderConfig } from "./base";
 
-interface GoogleOAuthProviderConfig {
-  id?: string;
+interface GoogleOAuthProviderConfig extends ProviderConfig {
   discoveryDocument?: string;
   clientId: string;
   clientSecret: string;
+  scope?: string;
 }
 
 const defaultConfig: Partial<GoogleOAuthProviderConfig> = {
   id: "google",
   discoveryDocument: "https://accounts.google.com/.well-known/openid-configuration",
+  scope: "openid profile email",
 };
 
 export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
@@ -32,17 +33,21 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     return metadata[key] as string;
   }
 
-  async signin() {
+  getRedirectUri(host: string) {
+    return `http://${host}${"/api/auth/callback/"}${this.id}`;
+  }
+
+  async signin({ host }: ServerRequest) {
     const authorizationEndpoint = await this.getEndpoint("authorization_endpoint");
 
     const data = {
       response_type: "code",
       client_id: this.config.clientId,
-      scope: "openid profile email",
-      redirect_uri: "http://localhost:5555/api/auth/callback/google",
-      state: "1234",
+      scope: this.config.scope,
+      redirect_uri: this.getRedirectUri(host),
+      state: "1234", // TODO: Generate random
       login_hint: "example@provider.com",
-      nonce: Math.round(Math.random() * 1000).toString(),
+      nonce: Math.round(Math.random() * 1000).toString(), // TODO: Check
     };
 
     return {
@@ -53,14 +58,14 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     };
   }
 
-  async getTokens(code: string) {
+  async getTokens(code: string, redirectUri: string) {
     const tokenEndpoint = await this.getEndpoint("token_endpoint");
 
     const data = {
       code,
       client_id: this.config.clientId,
       client_secret: this.config.clientSecret,
-      redirect_uri: "http://localhost:5555/api/auth/callback/google",
+      redirect_uri: redirectUri,
       grant_type: "authorization_code",
     };
 
@@ -83,9 +88,9 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     return await res.json();
   }
 
-  async callback({ path, body, params, query }: ServerRequest) {
+  async callback({ query, host }: ServerRequest): [any, any] {
     const code = query.get("code");
-    const tokens = await this.getTokens(code);
+    const tokens = await this.getTokens(code, this.getRedirectUri(host));
     const user = await this.getUserProfile(tokens);
 
     const queryData = {};
@@ -97,15 +102,6 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
         : value;
     });
 
-    return {
-      body: {
-        path,
-        body: JSON.stringify(body),
-        query: queryData,
-        params: JSON.stringify(params),
-        tokens,
-        user,
-      },
-    };
+    return [tokens, user];
   }
 }
