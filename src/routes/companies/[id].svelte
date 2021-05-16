@@ -7,9 +7,27 @@
 
 <script lang="ts">
   let sort: "votes" | "new" = "votes";
+  let sticky: number;
+  let titleHeight: number;
+  let title;
+  $: sticky = title?.offsetTop - titleHeight;
+  let scrollY: number;
 </script>
 
-<h1 class="text-2xl mb-4">Nestlé</h1>
+<svelte:head>
+  <title>Nestlé | Cheeri-No</title>
+</svelte:head>
+
+<svelte:window bind:scrollY />
+
+<h1
+  class="text-2xl mb-4 text-center w-full sticky top-6"
+  class:z-10={scrollY > sticky}
+  bind:this={title}
+  bind:clientHeight={titleHeight}
+>
+  Nestlé
+</h1>
 
 <p class="text-lg">Reasons</p>
 
