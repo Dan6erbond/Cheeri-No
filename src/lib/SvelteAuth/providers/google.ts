@@ -32,7 +32,7 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     return metadata[key] as string;
   }
 
-  async login() {
+  async signin() {
     const authorizationEndpoint = await this.getEndpoint("authorization_endpoint");
 
     const data = {

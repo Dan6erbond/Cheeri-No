@@ -15,7 +15,7 @@ export class Auth {
       return { body: "1234" }; // TODO: Generate real token
     }
 
-    const match = path.match(/\/api\/auth\/(?<method>login|callback)\/(?<provider>\w+)/);
+    const match = path.match(/\/api\/auth\/(?<method>signin|callback)\/(?<provider>\w+)/);
 
     if (match) {
       const provider = this.config?.providers?.find(
@@ -23,7 +23,7 @@ export class Auth {
       );
       if (provider) {
         if (match.groups.method === "login") {
-          return await provider.login(request);
+          return await provider.signin(request);
         } else {
           return await provider.callback(request);
         }

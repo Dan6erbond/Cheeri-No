@@ -12,7 +12,7 @@ export abstract class Provider<T extends ProviderConfig = ProviderConfig> {
     this.id = config.id;
   }
 
-  abstract login<Locals extends Record<string, any> = Record<string, any>, Body = unknown>(
+  abstract signin<Locals extends Record<string, any> = Record<string, any>, Body = unknown>(
     request: ServerRequest<Locals, Body>,
   ): EndpointOutput | Promise<EndpointOutput>;
 
