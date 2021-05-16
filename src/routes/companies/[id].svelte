@@ -8,9 +8,8 @@
 <script lang="ts">
   let sort: "votes" | "new" = "votes";
   let sticky: number;
-  let titleHeight: number;
   let title;
-  $: sticky = title?.offsetTop - titleHeight;
+  $: sticky = title?.offsetTop;
   let scrollY: number;
 </script>
 
@@ -21,12 +20,36 @@
 <svelte:window bind:scrollY />
 
 <h1
-  class="text-2xl mb-4 text-center w-full sticky top-6"
+  class={clsx(
+    "text-2xl",
+    "mb-4",
+    "text-center",
+    "w-full",
+    "sticky",
+    "top-6",
+    "md:text-left",
+    "overflow-hidden",
+    scrollY > sticky && [
+      "pl-36",
+      "pr-12",
+      "md:px-0",
+      "md:ml-36",
+      "lg:ml-28",
+      "xl:ml-0",
+      "max-w-screen",
+      "md:max-w-48",
+      "lg:max-w-64",
+      "xl:max-w-80",
+      "whitespace-nowrap",
+      "overflow-ellipsis",
+    ],
+  )}
   class:z-10={scrollY > sticky}
   bind:this={title}
-  bind:clientHeight={titleHeight}
 >
-  Nestlé
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia atque laudantium perferendis
+  temporibus rerum, maiores illo assumenda enim, nemo, alias delectus. Corporis praesentium quos
+  fugit quibusdam, impedit voluptatibus possimus nisi.
 </h1>
 
 <p class="text-lg">Reasons</p>

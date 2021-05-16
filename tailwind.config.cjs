@@ -1,5 +1,5 @@
 const { tailwindExtractor } = require("tailwindcss/lib/lib/purgeUnusedStyles");
-const { fontFamily } = require("tailwindcss/defaultTheme");
+const { fontFamily, maxWidth, spacing } = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
@@ -38,7 +38,9 @@ module.exports = {
       yellow: colors.amber,
       pink: colors.pink,
     },
-    extend: {},
+    extend: {
+      maxWidth: spacing,
+    },
   },
   variants: {
     extend: {
