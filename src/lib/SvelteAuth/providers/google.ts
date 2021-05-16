@@ -88,19 +88,10 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     return await res.json();
   }
 
-  async callback({ query, host }: ServerRequest): Promise<[any, any, string | null]> {
+  async verify({ query, host }: ServerRequest): Promise<[any, any, string | null]> {
     const code = query.get("code");
     const tokens = await this.getTokens(code, this.getRedirectUri(host));
     const user = await this.getUserProfile(tokens);
-
-    const queryData = {};
-    query.forEach((value, key) => {
-      queryData[key] = queryData[key]
-        ? Array.isArray(queryData[key])
-          ? [...queryData[key], value]
-          : [queryData[key], value]
-        : value;
-    });
 
     return [user, tokens, ""];
   }
