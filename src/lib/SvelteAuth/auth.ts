@@ -22,7 +22,7 @@ export class Auth {
         (provider) => provider.id === match.groups.provider,
       );
       if (provider) {
-        if (match.groups.method === "login") {
+        if (match.groups.method === "signin") {
           return await provider.signin(request);
         } else {
           return await provider.callback(request);
