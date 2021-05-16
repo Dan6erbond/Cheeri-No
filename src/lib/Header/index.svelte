@@ -2,6 +2,7 @@
   import { page } from "$app/stores";
   import clsx from "clsx";
   import logo from "./logo.svg";
+  import { session } from "$app/stores";
 </script>
 
 <header
@@ -63,7 +64,7 @@
   <div class="flex-grow" />
 
   <div class="flex items-center justify-center">
-    {#if false}
+    {#if $session.user}
       <a
         href="/profile"
         class={clsx(

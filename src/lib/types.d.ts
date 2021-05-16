@@ -1,7 +1,5 @@
-/**
- * Can be made globally available by placing this
- * inside `global.d.ts` and removing `export` keyword
- */
-export interface Locals {
-  userid: string;
+declare module "$app/stores" {
+  import type { Session } from "./lib/SvelteAuth/interfaces";
+
+  export const session: Writable<Session>;
 }
