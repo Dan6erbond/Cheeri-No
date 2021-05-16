@@ -12,7 +12,7 @@
 >
   <h1 class="text-xl md:text-2xl">Login</h1>
   <hr class="my-3 border-gray-400 w-full" />
-  <p class="text-gray-400 max-w-lg">
+  <p class="text-sm md:text-base text-gray-400 max-w-lg">
     In order to submit companies and provide valid sources please login with a social provider so we
     can ensure you are a real human.
   </p>
@@ -22,9 +22,9 @@
   <div class="flex flex-col justify-items-stretch space-y-4">
     <a
       href="/api/auth/signin/google"
-      class="inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors"
+      class="text-sm md:text-base inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors items-center"
     >
-      <svg viewBox="0 0 128 128" class="h-6 w-6">
+      <svg viewBox="0 0 128 128" class="h-4 w-4 md:h-6 md:w-6">
         <g id="original"
           ><path
             fill="#fff"
@@ -49,9 +49,9 @@
 
     <a
       href="/api/auth/signin/facebook"
-      class="inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors"
+      class="text-sm md:text-base inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors items-center"
     >
-      <svg viewBox="0 0 128 128" class="h-6 w-6">
+      <svg viewBox="0 0 128 128" class="h-4 w-4 md:h-6 md:w-6">
         <g id="original"
           ><rect
             id="Blue"
@@ -74,9 +74,9 @@
 
     <a
       href="/api/auth/signin/twitter"
-      class="inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors"
+      class="text-sm md:text-base inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors items-center"
     >
-      <svg viewBox="0 0 128 128" class="h-6 w-6">
+      <svg viewBox="0 0 128 128" class="h-4 w-4 md:h-6 md:w-6">
         <g id="surface1">
           <path
             style=" stroke:none;fill-rule:nonzero;fill:rgb(11.372549%,63.137255%,94.901961%);fill-opacity:1;"
@@ -90,5 +90,5 @@
 
   <br />
 
-  <p class="text-orange-400 max-w-lg">We will never share your identity with anyone else.</p>
+  <p class="text-sm md:text-base text-orange-400 max-w-lg">We will never share your identity with anyone else.</p>
 </section>

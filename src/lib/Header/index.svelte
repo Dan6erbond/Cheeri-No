@@ -5,7 +5,7 @@
 </script>
 
 <header
-  class="p-4 px-4 md:px-8 lg:px-12 flex items-center justify-center border-b border-gray-300 bg-white"
+  class="p-4 px-4 md:px-8 lg:px-12 flex items-center justify-center border-b border-gray-300 bg-white fixed top-0 right-0 left-0 z-10"
 >
   <div class="flex items-center justify-center">
     <a href="/">

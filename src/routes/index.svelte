@@ -54,7 +54,7 @@
       <span>New</span>
     </button>
     <div class="flex-grow" />
-    <button on:click={() => (view = "card")} class="mr-2" class:text-orange-400={view === "card"}>
+    <button on:click={() => (view = "card")} class="mr-2 hidden md:block" class:text-orange-400={view === "card"}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6"
