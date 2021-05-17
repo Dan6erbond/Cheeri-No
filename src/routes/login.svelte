@@ -72,11 +72,14 @@
       <span>Sign in with Facebook</span>
     </a>
 
-    <a
-      href="/api/auth/signin/twitter"
-      class="text-sm md:text-base inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors items-center"
+    <p class="text-gray-600 text-center">Coming soon.</p>
+
+    <hr class="my-3 border-gray-400 w-full" />
+
+    <div
+      class="text-sm md:text-base inline-flex space-x-4 py-2 px-4 border-gray-400 rounded hover:no-underline border hover:bg-gray-100 transition-colors items-center text-gray-500 cursor-not-allowed"
     >
-      <svg viewBox="0 0 128 128" class="h-4 w-4 md:h-6 md:w-6">
+      <svg viewBox="0 0 128 128" class="h-4 w-4 md:h-6 md:w-6 filter grayscale opacity-60">
         <g id="surface1">
           <path
             style=" stroke:none;fill-rule:nonzero;fill:rgb(11.372549%,63.137255%,94.901961%);fill-opacity:1;"
@@ -85,10 +88,12 @@
         </g>
       </svg>
       <span>Sign in with Twitter</span>
-    </a>
+    </div>
   </div>
 
   <br />
 
-  <p class="text-sm md:text-base text-orange-400 max-w-lg">We will never share your identity with anyone else.</p>
+  <p class="text-sm md:text-base text-orange-400 max-w-lg">
+    We will never share your identity with anyone else.
+  </p>
 </section>
