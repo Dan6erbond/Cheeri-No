@@ -13,7 +13,7 @@
   <h1 class="text-xl md:text-2xl">Login</h1>
   <hr class="my-3 border-gray-400 w-full" />
   <p class="text-sm md:text-base text-gray-400 max-w-lg">
-    In order to submit companies and provide valid sources please login with a social provider so we
+    In order to submit companies and provide valid sources please log in with a social provider so we
     can ensure you are a real human.
   </p>
 
