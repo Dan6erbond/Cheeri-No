@@ -192,5 +192,7 @@ export class Auth {
 
       return { user: token.user };
     }
+
+    return {};
   };
 }
