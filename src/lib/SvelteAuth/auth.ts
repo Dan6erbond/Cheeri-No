@@ -5,6 +5,7 @@ import cookie from "cookie";
 import * as jsonwebtoken from "jsonwebtoken";
 import type { JWT, Session } from "./interfaces";
 import type { Provider } from "./providers";
+import type { ProviderConfig } from "./providers/base";
 
 interface AuthConfig {
   providers?: Provider[];
@@ -94,7 +95,7 @@ export class Auth {
 
   async handleProviderCallback(
     request: ServerRequest,
-    provider: Provider,
+    provider: Provider<ProviderConfig>,
   ): Promise<EndpointOutput> {
     const { headers, host } = request;
     const [profile, redirectUrl] = await provider.callback(request);
