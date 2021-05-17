@@ -6,9 +6,7 @@ export async function signOut() {
 
   fetch("/api/auth/session")
     .then((res) => res.json())
-    .then(({ session }) => {
-      session$.set(session);
-    });
+    .then(session$.set);
 
   return signout === true;
 }
