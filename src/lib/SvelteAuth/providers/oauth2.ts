@@ -3,9 +3,6 @@ import type { CallbackResult } from "../types";
 import { Provider, ProviderConfig } from "./base";
 
 export interface OAuth2ProviderConfig extends ProviderConfig {
-  clientId: string;
-  clientSecret: string;
-  scope?: string;
   profile?: (profile: any, tokens: any) => any | Promise<any>;
 }
 
@@ -36,13 +33,20 @@ export abstract class OAuth2Provider<T extends OAuth2ProviderConfig> extends Pro
     };
   }
 
+  getRedirectUrl(query: URLSearchParams) {
+    if (query.get("state")) {
+      const state = Buffer.from(query.get("state"), "base64").toString();
+      return state
+        .split(",")
+        .find((state) => state.startsWith("redirect="))
+        ?.replace("redirect=", "");
+    }
+  }
+
   async callback({ query, host }: ServerRequest): Promise<CallbackResult> {
     const code = query.get("code");
-    const state = Buffer.from(query.get("state"), "base64").toString();
-    const redirect = state
-      .split(",")
-      .find((state) => state.startsWith("redirect="))
-      ?.replace("redirect=", "");
+    const redirect = this.getRedirectUrl(query);
+
     const tokens = await this.getTokens(code, this.getCallbackUri(host));
     let user = await this.getUserProfile(tokens);
 

@@ -47,7 +47,12 @@ export class Auth {
       return null;
     }
 
-    let token = (jsonwebtoken.verify(cookies.svelteauthjwt, this.getJwtSecret()) || {}) as JWT;
+    let token: JWT;
+    try {
+      token = (jsonwebtoken.verify(cookies.svelteauthjwt, this.getJwtSecret()) || {}) as JWT;
+    } catch {
+      return null;
+    }
 
     if (this.config?.callbacks?.jwt) {
       token = await this.config.callbacks.jwt(token);

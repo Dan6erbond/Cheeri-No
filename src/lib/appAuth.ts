@@ -1,6 +1,7 @@
 import { Auth } from "./SvelteAuth";
 import { GoogleOAuthProvider } from "./SvelteAuth/providers";
 import { FacebookAuthProvider } from "./SvelteAuth/providers/facebook";
+import { TwitterAuthProvider } from "./SvelteAuth/providers/twitter";
 
 export const appAuth = new Auth({
   providers: [
@@ -16,6 +17,13 @@ export const appAuth = new Auth({
       clientSecret: import.meta.env.VITE_FACEBOOK_OAUTH_CLIENT_SECRET,
       profile(profile) {
         return { ...profile, provider: "facebook" };
+      },
+    }),
+    new TwitterAuthProvider({
+      apiKey: import.meta.env.VITE_TWITTER_API_KEY,
+      apiSecret: import.meta.env.VITE_TWITTER_API_SECRET,
+      profile(profile) {
+        return { ...profile, provider: "twitter" };
       },
     }),
   ],

@@ -2,7 +2,10 @@ import type { ServerRequest } from "@sveltejs/kit/types/endpoint";
 import { OAuth2Provider, OAuth2ProviderConfig } from "./oauth2";
 
 interface FacebookAuthProviderConfig extends OAuth2ProviderConfig {
+  clientId: string;
+  clientSecret: string;
   userProfileFields?: string;
+  scope?: string;
 }
 
 const defaultConfig: Partial<FacebookAuthProviderConfig> = {
