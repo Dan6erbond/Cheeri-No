@@ -1,6 +1,7 @@
 import { Auth } from "./SvelteAuth";
 import { GoogleOAuthProvider } from "./SvelteAuth/providers";
 import { FacebookAuthProvider } from "./SvelteAuth/providers/facebook";
+import { RedditOAuthProvider } from "./SvelteAuth/providers/reddit";
 import { TwitterAuthProvider } from "./SvelteAuth/providers/twitter";
 
 export const appAuth = new Auth({
@@ -26,15 +27,68 @@ export const appAuth = new Auth({
         return { ...profile, provider: "twitter" };
       },
     }),
+    new RedditOAuthProvider({
+      apiKey: import.meta.env.VITE_REDDIT_API_KEY,
+      apiSecret: import.meta.env.VITE_REDDIT_API_SECRET,
+      profile({
+        is_employee,
+        has_external_account,
+        snoovatar_img,
+        verified,
+        id,
+        over_18,
+        is_gold,
+        is_mod,
+        awarder_karma,
+        has_verified_email,
+        is_suspended,
+        icon_img,
+        pref_nightmode,
+        awardee_karma,
+        password_set,
+        link_karma,
+        total_karma,
+        name,
+        created,
+        created_utc,
+        comment_karma,
+      }) {
+        return {
+          is_employee,
+          has_external_account,
+          snoovatar_img,
+          verified,
+          id,
+          over_18,
+          is_gold,
+          is_mod,
+          awarder_karma,
+          has_verified_email,
+          is_suspended,
+          icon_img,
+          pref_nightmode,
+          awardee_karma,
+          password_set,
+          link_karma,
+          total_karma,
+          name,
+          created,
+          created_utc,
+          comment_karma,
+          provider: "reddit",
+        };
+      },
+    }),
   ],
   callbacks: {
     jwt(token, profile) {
       if (profile?.provider) {
+        const { provider, ...account } = profile;
         token = {
           ...token,
           user: {
             ...token.user,
-            [profile.provider]: profile,
+            [provider]: account,
           },
         };
       }
