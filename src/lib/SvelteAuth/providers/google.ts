@@ -1,13 +1,8 @@
-import type { EndpointOutput, ServerRequest } from "@sveltejs/kit/types/endpoint";
-import type { CallbackResult } from "../types";
-import { Provider, ProviderConfig } from "./base";
+import type { ServerRequest } from "@sveltejs/kit/types/endpoint";
+import { OAuth2Provider, OAuth2ProviderConfig } from "./oauth2";
 
-interface GoogleOAuthProviderConfig extends ProviderConfig {
+interface GoogleOAuthProviderConfig extends OAuth2ProviderConfig {
   discoveryDocument?: string;
-  clientId: string;
-  clientSecret: string;
-  scope?: string;
-  profile?: (profile: any, tokens: any) => any | Promise<any>;
 }
 
 const defaultConfig: Partial<GoogleOAuthProviderConfig> = {
@@ -16,7 +11,7 @@ const defaultConfig: Partial<GoogleOAuthProviderConfig> = {
   scope: "openid profile email",
 };
 
-export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
+export class GoogleOAuthProvider extends OAuth2Provider<GoogleOAuthProviderConfig> {
   constructor(config: GoogleOAuthProviderConfig) {
     super({
       ...defaultConfig,
@@ -35,39 +30,21 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     return metadata[key] as string;
   }
 
-  getRedirectUri(host: string) {
-    return `http://${host}${"/api/auth/callback/"}${this.id}`;
-  }
-
-  async signin({ host, method }: ServerRequest): Promise<EndpointOutput> {
+  async getSigninUrl({ host }: ServerRequest, state: string) {
     const authorizationEndpoint = await this.getEndpoint("authorization_endpoint");
 
     const data = {
       response_type: "code",
       client_id: this.config.clientId,
       scope: this.config.scope,
-      redirect_uri: this.getRedirectUri(host),
-      state: "1234", // TODO: Generate random
+      redirect_uri: this.getCallbackUri(host),
+      state,
       login_hint: "example@provider.com",
-      nonce: Math.round(Math.random() * 1000).toString(), // TODO: Check
+      nonce: Math.round(Math.random() * 1000).toString(), // TODO: Generate random based on user values
     };
 
     const url = `${authorizationEndpoint}?${new URLSearchParams(data)}`;
-
-    if (method === "POST") {
-      return {
-        body: {
-          redirect: url,
-        },
-      };
-    }
-
-    return {
-      status: 302,
-      headers: {
-        Location: url,
-      },
-    };
+    return url;
   }
 
   async getTokens(code: string, redirectUri: string) {
@@ -98,17 +75,5 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
       headers: { Authorization: `${tokens.token_type} ${tokens.access_token}` },
     });
     return await res.json();
-  }
-
-  async callback({ query, host }: ServerRequest): Promise<CallbackResult> {
-    const code = query.get("code");
-    const tokens = await this.getTokens(code, this.getRedirectUri(host));
-    let user = await this.getUserProfile(tokens);
-
-    if (this.config.profile) {
-      user = await this.config.profile(user, tokens);
-    }
-
-    return [user, ""];
   }
 }

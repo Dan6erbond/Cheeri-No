@@ -7,11 +7,19 @@ export interface ProviderConfig {
   profile?: (profile: any, account: any) => any | Promise<any>;
 }
 
-export abstract class Provider<T extends ProviderConfig = ProviderConfig> {
+export abstract class Provider<T extends ProviderConfig> {
   id: string;
 
   constructor(protected readonly config: T) {
     this.id = config.id;
+  }
+
+  getUri(host: string, path: string) {
+    return `http://${host}${path}`;
+  }
+
+  getCallbackUri(host: string) {
+    return this.getUri(host, `${"/api/auth/callback/"}${this.id}`);
   }
 
   abstract signin<Locals extends Record<string, any> = Record<string, any>, Body = unknown>(

@@ -1,13 +1,8 @@
-import type { EndpointOutput, ServerRequest } from "@sveltejs/kit/types/endpoint";
-import type { CallbackResult } from "../types";
-import { Provider, ProviderConfig } from "./base";
+import type { ServerRequest } from "@sveltejs/kit/types/endpoint";
+import { OAuth2Provider, OAuth2ProviderConfig } from "./oauth2";
 
-interface FacebookAuthProviderConfig extends ProviderConfig {
-  clientId: string;
-  clientSecret: string;
-  scope?: string;
+interface FacebookAuthProviderConfig extends OAuth2ProviderConfig {
   userProfileFields?: string;
-  profile?: (profile: any, tokens: any) => any | Promise<any>;
 }
 
 const defaultConfig: Partial<FacebookAuthProviderConfig> = {
@@ -17,7 +12,7 @@ const defaultConfig: Partial<FacebookAuthProviderConfig> = {
     "id,name,first_name,last_name,middle_name,name_format,picture,short_name,email",
 };
 
-export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
+export class FacebookAuthProvider extends OAuth2Provider<FacebookAuthProviderConfig> {
   constructor(config: FacebookAuthProviderConfig) {
     super({
       ...defaultConfig,
@@ -25,35 +20,18 @@ export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
     });
   }
 
-  async signin({ host, method }: ServerRequest): Promise<EndpointOutput> {
+  getSigninUrl({ host }: ServerRequest, state: string) {
     const endpoint = "https://www.facebook.com/v10.0/dialog/oauth";
 
     const data = {
       client_id: this.config.clientId,
-      redirect_uri: this.getRedirectUri(host),
-      state: "1234", // TODO: Generate random
+      scope: this.config.scope,
+      redirect_uri: this.getCallbackUri(host),
+      state,
     };
 
     const url = `${endpoint}?${new URLSearchParams(data)}`;
-
-    if (method === "POST") {
-      return {
-        body: {
-          redirect: url,
-        },
-      };
-    }
-
-    return {
-      status: 302,
-      headers: {
-        Location: url,
-      },
-    };
-  }
-
-  getRedirectUri(host: string) {
-    return `http://${host}${"/api/auth/callback/"}${this.id}`;
+    return url;
   }
 
   async getTokens(code: string, redirectUri: string) {
@@ -82,7 +60,8 @@ export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
     return await res.json();
   }
 
-  async getUserProfile(tokens: any, inspectResult: any) {
+  async getUserProfile(tokens: any) {
+    const inspectResult = await this.inspectToken(tokens);
     const endpoint = `https://graph.facebook.com/v10.0/${inspectResult.data.user_id}`;
 
     const data = {
@@ -92,18 +71,5 @@ export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
 
     const res = await fetch(`${endpoint}?${new URLSearchParams(data)}`);
     return await res.json();
-  }
-
-  async callback({ query, host }: ServerRequest): Promise<CallbackResult> {
-    const code = query.get("code");
-    const tokens = await this.getTokens(code, this.getRedirectUri(host));
-    const inspectResult = await this.inspectToken(tokens);
-    let user = await this.getUserProfile(tokens, inspectResult);
-
-    if (this.config.profile) {
-      user = await this.config.profile(user, tokens);
-    }
-
-    return [user, ""];
   }
 }
