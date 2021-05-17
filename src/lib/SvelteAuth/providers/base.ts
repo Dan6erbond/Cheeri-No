@@ -7,7 +7,7 @@ export interface ProviderConfig {
   profile?: (profile: any, account: any) => any | Promise<any>;
 }
 
-export abstract class Provider<T extends ProviderConfig> {
+export abstract class Provider<T extends ProviderConfig = ProviderConfig> {
   id: string;
 
   constructor(protected readonly config: T) {

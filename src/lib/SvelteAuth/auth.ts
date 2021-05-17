@@ -5,7 +5,6 @@ import cookie from "cookie";
 import * as jsonwebtoken from "jsonwebtoken";
 import type { JWT, Session } from "./interfaces";
 import type { Provider } from "./providers";
-import type { ProviderConfig } from "./providers/base";
 
 interface AuthConfig {
   providers?: Provider[];
@@ -75,7 +74,7 @@ export class Auth {
     };
   }
 
-  signToken(token: JWT | any) {
+  signToken(token: JWT) {
     const opts = !token.exp
       ? {
           expiresIn: this.config?.jwtExpiresIn ?? "30d",
@@ -95,7 +94,7 @@ export class Auth {
 
   async handleProviderCallback(
     request: ServerRequest,
-    provider: Provider<ProviderConfig>,
+    provider: Provider,
   ): Promise<EndpointOutput> {
     const { headers, host } = request;
     const [profile, redirectUrl] = await provider.callback(request);
@@ -108,6 +107,7 @@ export class Auth {
     }
 
     const jwt = this.signToken(token);
+    console.log(jwt);
     const redirect = await this.getRedirectUrl(host, redirectUrl);
 
     return {
@@ -128,6 +128,9 @@ export class Auth {
 
       if (method === "POST") {
         return {
+          headers: {
+            "set-cookie": `svelteauthjwt=${jwt}; Path=/; HttpOnly`,
+          },
           body: {
             signout: true,
           },
