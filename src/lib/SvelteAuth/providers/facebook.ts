@@ -1,4 +1,5 @@
-import type { ServerRequest } from "@sveltejs/kit/types/endpoint";
+import type { EndpointOutput, ServerRequest } from "@sveltejs/kit/types/endpoint";
+import type { CallbackResult } from "../types";
 import { Provider, ProviderConfig } from "./base";
 
 interface FacebookAuthProviderConfig extends ProviderConfig {
@@ -6,6 +7,7 @@ interface FacebookAuthProviderConfig extends ProviderConfig {
   clientSecret: string;
   scope?: string;
   userProfileFields?: string;
+  profile?: (profile: any, tokens: any) => any | Promise<any>;
 }
 
 const defaultConfig: Partial<FacebookAuthProviderConfig> = {
@@ -23,8 +25,8 @@ export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
     });
   }
 
-  async signin({ host }: ServerRequest) {
-    const endpoint = `https://www.facebook.com/v10.0/dialog/oauth`;
+  async signin({ host, method }: ServerRequest): Promise<EndpointOutput> {
+    const endpoint = "https://www.facebook.com/v10.0/dialog/oauth";
 
     const data = {
       client_id: this.config.clientId,
@@ -32,10 +34,20 @@ export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
       state: "1234", // TODO: Generate random
     };
 
+    const url = `${endpoint}?${new URLSearchParams(data)}`;
+
+    if (method === "POST") {
+      return {
+        body: {
+          redirect: url,
+        },
+      };
+    }
+
     return {
       status: 302,
       headers: {
-        Location: `${endpoint}?${new URLSearchParams(data)}`,
+        Location: url,
       },
     };
   }
@@ -82,12 +94,16 @@ export class FacebookAuthProvider extends Provider<FacebookAuthProviderConfig> {
     return await res.json();
   }
 
-  async verify({ query, host }: ServerRequest): Promise<[any, any, string | null]> {
+  async callback({ query, host }: ServerRequest): Promise<CallbackResult> {
     const code = query.get("code");
     const tokens = await this.getTokens(code, this.getRedirectUri(host));
     const inspectResult = await this.inspectToken(tokens);
-    const user = await this.getUserProfile(tokens, inspectResult);
+    let user = await this.getUserProfile(tokens, inspectResult);
 
-    return [user, tokens, ""];
+    if (this.config.profile) {
+      user = await this.config.profile(user, tokens);
+    }
+
+    return [user, ""];
   }
 }

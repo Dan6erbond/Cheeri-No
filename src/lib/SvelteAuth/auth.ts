@@ -1,4 +1,5 @@
 import type { GetSession, RequestHandler } from "@sveltejs/kit";
+import type { EndpointOutput, ServerRequest } from "@sveltejs/kit/types/endpoint";
 import type { Headers } from "@sveltejs/kit/types/helper";
 import cookie from "cookie";
 import * as jsonwebtoken from "jsonwebtoken";
@@ -14,7 +15,7 @@ interface AuthConfig {
 
 interface AuthCallbacks {
   signIn?: () => boolean | Promise<boolean>;
-  jwt?: (token: JWT, profile?: any, account?: any) => JWT | Promise<JWT>;
+  jwt?: (token: JWT, profile?: any) => JWT | Promise<JWT>;
   session?: (token: JWT, session: Session) => Session | Promise<Session>;
   redirect?: (url: string) => string | Promise<string>;
 }
@@ -86,21 +87,47 @@ export class Auth {
     return redirect;
   }
 
-  get: RequestHandler = async (request) => {
-    const { path, headers, host } = request;
+  async handleProviderCallback(
+    request: ServerRequest,
+    provider: Provider,
+  ): Promise<EndpointOutput> {
+    const { headers, host } = request;
+    const [profile, redirectUrl] = await provider.callback(request);
 
-    if (path === "/api/auth/csrf") {
-      return { body: "1234" }; // TODO: Generate real token
-    } else if (path === "/api/auth/session") {
-      const session = await this.getSession(request);
-      return {
-        body: {
-          session,
-        },
-      };
-    } else if (path === "/api/auth/signout") {
+    let token = (await this.getToken(headers)) ?? { user: {} };
+    if (this.config?.callbacks?.jwt) {
+      token = await this.config.callbacks.jwt(token, profile);
+    } else {
+      token = this.setToken(headers, { user: profile });
+    }
+
+    const jwt = this.signToken(token);
+    const redirect = await this.getRedirectUrl(host, redirectUrl);
+
+    return {
+      status: 302,
+      headers: {
+        "set-cookie": `svelteauthjwt=${jwt}; Path=/; HttpOnly`,
+        Location: redirect,
+      },
+    };
+  }
+
+  async handleEndpoint(request: ServerRequest): Promise<EndpointOutput> {
+    const { path, headers, method, host } = request;
+
+    if (path === "/api/auth/signout") {
       const token = this.setToken(headers, {});
       const jwt = this.signToken(token);
+
+      if (method === "POST") {
+        return {
+          body: {
+            signout: true,
+          },
+        };
+      }
+
       const redirect = await this.getRedirectUrl(host);
 
       return {
@@ -122,28 +149,31 @@ export class Auth {
         if (match.groups.method === "signin") {
           return await provider.signin(request);
         } else {
-          const [profile, account, redirectUrl] = await provider.callback(request);
-
-          let token = (await this.getToken(headers)) ?? { user: {} };
-          if (this.config?.callbacks?.jwt) {
-            token = await this.config.callbacks.jwt(token, profile, account);
-          } else {
-            token = this.setToken(headers, { user: profile });
-          }
-
-          const jwt = this.signToken(token);
-          const redirect = await this.getRedirectUrl(host, redirectUrl);
-
-          return {
-            status: 302,
-            headers: {
-              "set-cookie": `svelteauthjwt=${jwt}; Path=/; HttpOnly`,
-              Location: redirect,
-            },
-          };
+          return await this.handleProviderCallback(request, provider);
         }
       }
     }
+  }
+
+  get: RequestHandler = async (request) => {
+    const { path } = request;
+
+    if (path === "/api/auth/csrf") {
+      return { body: "1234" }; // TODO: Generate real token
+    } else if (path === "/api/auth/session") {
+      const session = await this.getSession(request);
+      return {
+        body: {
+          session,
+        },
+      };
+    }
+
+    return await this.handleEndpoint(request);
+  };
+
+  post: RequestHandler = async (request) => {
+    return await this.handleEndpoint(request);
   };
 
   getSession: GetSession = async ({ headers }) => {

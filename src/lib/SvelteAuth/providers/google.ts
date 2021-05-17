@@ -1,4 +1,5 @@
-import type { ServerRequest } from "@sveltejs/kit/types/endpoint";
+import type { EndpointOutput, ServerRequest } from "@sveltejs/kit/types/endpoint";
+import type { CallbackResult } from "../types";
 import { Provider, ProviderConfig } from "./base";
 
 interface GoogleOAuthProviderConfig extends ProviderConfig {
@@ -6,6 +7,7 @@ interface GoogleOAuthProviderConfig extends ProviderConfig {
   clientId: string;
   clientSecret: string;
   scope?: string;
+  profile?: (profile: any, tokens: any) => any | Promise<any>;
 }
 
 const defaultConfig: Partial<GoogleOAuthProviderConfig> = {
@@ -37,7 +39,7 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     return `http://${host}${"/api/auth/callback/"}${this.id}`;
   }
 
-  async signin({ host }: ServerRequest) {
+  async signin({ host, method }: ServerRequest): Promise<EndpointOutput> {
     const authorizationEndpoint = await this.getEndpoint("authorization_endpoint");
 
     const data = {
@@ -50,10 +52,20 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
       nonce: Math.round(Math.random() * 1000).toString(), // TODO: Check
     };
 
+    const url = `${authorizationEndpoint}?${new URLSearchParams(data)}`;
+
+    if (method === "POST") {
+      return {
+        body: {
+          redirect: url,
+        },
+      };
+    }
+
     return {
       status: 302,
       headers: {
-        Location: `${authorizationEndpoint}?${new URLSearchParams(data)}`,
+        Location: url,
       },
     };
   }
@@ -88,11 +100,15 @@ export class GoogleOAuthProvider extends Provider<GoogleOAuthProviderConfig> {
     return await res.json();
   }
 
-  async verify({ query, host }: ServerRequest): Promise<[any, any, string | null]> {
+  async callback({ query, host }: ServerRequest): Promise<CallbackResult> {
     const code = query.get("code");
     const tokens = await this.getTokens(code, this.getRedirectUri(host));
-    const user = await this.getUserProfile(tokens);
+    let user = await this.getUserProfile(tokens);
 
-    return [user, tokens, ""];
+    if (this.config.profile) {
+      user = await this.config.profile(user, tokens);
+    }
+
+    return [user, ""];
   }
 }
