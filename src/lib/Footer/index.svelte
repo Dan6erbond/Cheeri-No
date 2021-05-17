@@ -15,14 +15,15 @@
     "items-center",
     "pb-16",
     "md:pb-2",
+    "space-y-2"
   )}
 >
-  <span class="mb-2">Built with ❤ by RaviAnand Mohabir</span>
-  <a href="/about" class="mb-2">About</a>
-  <a href="/donate" class="mb-2">Donate</a>
+  <span>Built with ❤ by RaviAnand Mohabir</span>
+  <a href="/about">About</a>
+  <a href="/donate">Donate</a>
   <a
     href="https://github.com/Dan6erbond/Cheeri-No"
-    class="transition-colors hover:text-red-700 flex hover:no-underline"
+    class="flex"
     target="_blank"
   >
     <svg viewBox="0 0 128 128" class="h-6 w-6 mr-2">
