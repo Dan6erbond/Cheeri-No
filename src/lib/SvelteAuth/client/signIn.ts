@@ -7,6 +7,18 @@ interface SignInConfig {
 }
 
 export async function signIn(provider: string, data?: any, config?: SignInConfig) {
+  if (data) {
+    const path = `/api/auth/callback/${provider}`;
+    const res = await fetch(path, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return await res.json();
+  }
+
   let redirectUrl: string;
   if (config?.redirectUrl) {
     redirectUrl = config.redirectUrl;
@@ -17,21 +29,10 @@ export async function signIn(provider: string, data?: any, config?: SignInConfig
   }
 
   const queryData = {
-    redirectUrl,
+    redirect: redirectUrl,
   };
   const query = new URLSearchParams(queryData);
-  const path = `/api/auth/callback/${provider}?${query}`;
-
-  if (data) {
-    const res = await fetch(path, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    return await res.json();
-  }
+  const path = `/api/auth/login/${provider}?${query}`;
 
   return await goto(path);
 }
