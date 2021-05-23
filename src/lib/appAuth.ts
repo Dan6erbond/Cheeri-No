@@ -1,10 +1,12 @@
-import { Auth } from "./SvelteAuth";
-import { GoogleOAuthProvider } from "./SvelteAuth/providers";
-import { FacebookAuthProvider } from "./SvelteAuth/providers/facebook";
-import { RedditOAuthProvider } from "./SvelteAuth/providers/reddit";
-import { TwitterAuthProvider } from "./SvelteAuth/providers/twitter";
+import { SvelteKitAuth } from "sk-auth";
+import {
+  FacebookAuthProvider,
+  GoogleOAuthProvider,
+  RedditOAuthProvider,
+  TwitterAuthProvider,
+} from "sk-auth/providers";
 
-export const appAuth = new Auth({
+export const appAuth = new SvelteKitAuth({
   providers: [
     new GoogleOAuthProvider({
       clientId: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
@@ -30,53 +32,9 @@ export const appAuth = new Auth({
     new RedditOAuthProvider({
       apiKey: import.meta.env.VITE_REDDIT_API_KEY,
       apiSecret: import.meta.env.VITE_REDDIT_API_SECRET,
-      profile({
-        is_employee,
-        has_external_account,
-        snoovatar_img,
-        verified,
-        id,
-        over_18,
-        is_gold,
-        is_mod,
-        awarder_karma,
-        has_verified_email,
-        is_suspended,
-        icon_img,
-        pref_nightmode,
-        awardee_karma,
-        password_set,
-        link_karma,
-        total_karma,
-        name,
-        created,
-        created_utc,
-        comment_karma,
-      }) {
-        return {
-          is_employee,
-          has_external_account,
-          snoovatar_img,
-          verified,
-          id,
-          over_18,
-          is_gold,
-          is_mod,
-          awarder_karma,
-          has_verified_email,
-          is_suspended,
-          icon_img,
-          pref_nightmode,
-          awardee_karma,
-          password_set,
-          link_karma,
-          total_karma,
-          name,
-          created,
-          created_utc,
-          comment_karma,
-          provider: "reddit",
-        };
+      profile(profile) {
+        profile = RedditOAuthProvider.profileHandler(profile);
+        return { ...profile, provider: "reddit" };
       },
     }),
   ],
@@ -88,7 +46,7 @@ export const appAuth = new Auth({
           ...token,
           user: {
             ...token.user,
-            [provider]: account,
+            connections: { ...token.user.connections, [provider]: account },
           },
         };
       }
@@ -96,4 +54,5 @@ export const appAuth = new Auth({
       return token;
     },
   },
+  jwtSecret: import.meta.env.JWT_SECRET_KEY,
 });
