@@ -15,17 +15,13 @@
     "items-center",
     "pb-16",
     "md:pb-2",
-    "space-y-2"
+    "space-y-2",
   )}
 >
   <span>Built with ❤ by RaviAnand Mohabir</span>
   <a href="/about">About</a>
   <a href="/donate">Donate</a>
-  <a
-    href="https://github.com/Dan6erbond/Cheeri-No"
-    class="flex"
-    target="_blank"
-  >
+  <a href="https://github.com/Dan6erbond/Cheeri-No" class="flex" target="_blank">
     <svg viewBox="0 0 128 128" class="h-6 w-6 mr-2">
       <g fill="currentColor">
         <path
@@ -41,3 +37,15 @@
     <span>GitHub</span>
   </a>
 </footer>
+
+<style lang="postcss">
+  footer {
+    @apply flex flex-col justify-center items-center p-10;
+  }
+
+  @media (min-width: 480px) {
+    footer {
+      @apply py-10 px-0;
+    }
+  }
+</style>
