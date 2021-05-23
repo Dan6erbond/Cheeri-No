@@ -1,8 +1,12 @@
 <script lang="ts">
   import { page, session } from "$app/stores";
-  import { signOut } from "$lib/SvelteAuth/client";
+  import { signOut as authSignOut } from "sk-auth/client";
   import clsx from "clsx";
   import logo from "./logo.svg";
+
+  function signOut() {
+    authSignOut().then(session.set);
+  }
 </script>
 
 <header
