@@ -40,6 +40,6 @@
     "cookie": "^0.4.1",
     "jsonwebtoken": "^8.5.1",
     "marked": "^2.0.3",
-    "sk-auth": "^0.2.0"
+    "sk-auth": "^0.3.1"
   }
 }
