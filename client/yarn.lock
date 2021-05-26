@@ -2683,9 +2683,9 @@ simple-swizzle@^0.2.2:
     is-arrayish "^0.3.1"
 
 sk-auth@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/sk-auth/-/sk-auth-0.3.4.tgz#8e9779e877dc1a2b2478682a6b5c8960052aa790"
-  integrity sha512-mY43eOP7Cp5CxNp+ILh7alH94WsN7RBE6ceSbMffdq3i6a5Cbp256Y/mktVyAdIKYU7wfke7LwfkH/eOParkFg==
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/sk-auth/-/sk-auth-0.3.7.tgz#08c8a8283e252010921ae9795454b55dc86326b3"
+  integrity sha512-b2CVVL9TlW7sogD38wea42sl2Qs4crTFuyp8WZ0awv79fYhpSc9YIodPPLBq8tfkmImXZBvQgIDcYa1YZSYYhQ==
   dependencies:
     cookie "^0.4.1"
     jsonwebtoken "^8.5.1"
