@@ -1,0 +1,67 @@
+version: "3.4"
+
+services:
+  db:
+    restart: always
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_DB: cheeri_no
+    secrets:
+      - postgres_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  server:
+    image: server
+    restart: on-failure
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: cheeri_no
+      POSTGRES_HOST: db
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
+    secrets:
+      - postgres_password
+  client:
+    image: client
+    restart: on-failure
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    environment:
+      API_HOST: server
+      API_PORT: 3000
+    ports:
+      - 3001:3000
+    links:
+      - server
+    depends_on:
+      - server
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+
+secrets:
+  postgres_password:
+    file: ./docker_postgres_password
