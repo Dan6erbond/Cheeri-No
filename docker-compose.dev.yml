@@ -5,20 +5,20 @@ services:
     restart: always
     image: postgres
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
       POSTGRES_DB: cheeri_no
-    secrets:
-      - postgres_password
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
+    secrets:
+      - postgres_password
   server:
     image: server
     restart: on-failure
@@ -64,4 +64,4 @@ services:
 
 secrets:
   postgres_password:
-    file: ./docker_postgres_password
+    file: ./docker_postgres_password.txt
