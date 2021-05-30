@@ -6,7 +6,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import configuration, { ConfigType } from "./config/configuration";
-import { getConfig } from "./mikro-orm.config";
+import { getConfig } from "./database/helpers";
 import { UsersModule } from "./users/users.module";
 
 @Module({
