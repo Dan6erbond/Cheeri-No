@@ -41,6 +41,11 @@ const config = {
           "codemirror-ssr/mode/yaml-frontmatter/yaml-frontmatter",
         ],
       },
+      server: {
+        hmr: {
+          port: 15319,
+        },
+      },
     },
   },
 };
