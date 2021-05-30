@@ -1,11 +1,12 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { GraphQLModule } from "@nestjs/graphql";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { GraphQLModule } from "@nestjs/graphql";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
-import configuration from "./config/configuration";
+import configuration, { ConfigType } from "./config/configuration";
+import { getConfig } from "./mikro-orm.config";
 import { UsersModule } from "./users/users.module";
 
 @Module({
@@ -14,7 +15,12 @@ import { UsersModule } from "./users/users.module";
       isGlobal: true,
       load: [configuration],
     }),
-    MikroOrmModule.forRoot(),
+    MikroOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService<ConfigType>) =>
+        getConfig(configService.get<ConfigType["db"]>("db")),
+      inject: [ConfigService],
+    }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
       autoSchemaFile: "schema.gql",

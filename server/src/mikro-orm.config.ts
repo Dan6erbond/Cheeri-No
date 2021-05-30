@@ -6,13 +6,16 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ConfigType } from "./config/configuration";
 
-export default async function () {
+async function getCreds() {
   const appContext = await NestFactory.createApplicationContext(AppModule);
   const configService = appContext.get<ConfigService<ConfigType>>(
     ConfigService,
   );
   const creds = configService.get<ConfigType["db"]>("db");
+  return creds;
+}
 
+export function getConfig(creds: ConfigType["db"]) {
   const logger = new Logger("MikroORM");
   const config = {
     ...creds,
@@ -26,5 +29,12 @@ export default async function () {
     },
     logger: logger.log.bind(logger),
   } as Options;
+
   return config;
 }
+
+export default (async () => {
+  const creds = await getCreds();
+  const config = getConfig(creds);
+  return config;
+})();
