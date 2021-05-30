@@ -10,8 +10,8 @@ import {
   Resolver,
 } from "@nestjs/graphql";
 import { UserInputError } from "apollo-server-express";
-import { PostObject } from "src/posts/dto/post.object";
-import { PostsService } from "src/posts/posts.service";
+import { PostObject } from "../posts/dto/post.object";
+import { PostsService } from "../posts/posts.service";
 import { GqlCurrentUser } from "../auth/decorator/gql-current-user.decorator";
 import { GqlAuthGuard } from "../auth/guards/gql-auth.guard";
 import { UpdateProfileInput } from "./dto/update-profile.input";

@@ -1,6 +1,6 @@
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { forwardRef, Module } from "@nestjs/common";
-import { UsersModule } from "src/users/users.module";
+import { UsersModule } from "../users/users.module";
 import { Post } from "./entities/post.entity";
 import { PostsController } from "./posts.controller";
 import { PostsResolver } from "./posts.resolver";

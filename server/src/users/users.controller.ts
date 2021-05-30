@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Put, UseGuards } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
-import { CurrentUser } from "src/auth/decorator/current-user.decorator";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { CurrentUser } from "../auth/decorator/current-user.decorator";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
 import { UserDto } from "./dto/user.dto";
 import { User } from "./entities/user.entity";
