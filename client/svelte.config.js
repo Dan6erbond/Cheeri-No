@@ -45,6 +45,9 @@ const config = {
         hmr: {
           port: 15319,
         },
+        watch: {
+          usePolling: true,
+        },
       },
     },
   },
