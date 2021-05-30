@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 
 const config = () => {
   let postgresPassword = process.env.POSTGRESS_PASSWORD;
@@ -7,6 +7,7 @@ const config = () => {
       process.env.POSTGRES_PASSWORD_FILE,
       "utf8",
     );
+    postgresPassword = postgresPassword.split("\r\n")[0];
   }
 
   return {
