@@ -10,7 +10,7 @@ import {
   Resolver,
 } from "@nestjs/graphql";
 import { UsersService } from "../users/users.service";
-import { GqlCurrentUser } from "../auth/decorator/gql-current-user.decorator";
+import { CurrentUser } from "../auth/decorator/current-user.decorator";
 import { GqlAuthGuard } from "../auth/guards/gql-auth.guard";
 import { UserObject } from "../users/dto/user.object";
 import { User } from "../users/entities/user.entity";
@@ -43,7 +43,7 @@ export class PostsResolver {
   @Mutation(() => PostObject)
   @UseGuards(GqlAuthGuard)
   createPost(
-    @GqlCurrentUser() user: User,
+    @CurrentUser() user: User,
     @Args("input") input: CreatePostInput,
   ) {
     return this.postsService.create(user.id, input);
@@ -52,7 +52,7 @@ export class PostsResolver {
   @Mutation(() => PostObject)
   @UseGuards(GqlAuthGuard)
   async updatePost(
-    @GqlCurrentUser() user: User,
+    @CurrentUser() user: User,
     @Args("input") input: UpdatePostInput,
   ) {
     const post = await this.postsService.findOne({
@@ -68,7 +68,7 @@ export class PostsResolver {
   @Mutation(() => Boolean)
   @UseGuards(GqlAuthGuard)
   async deletePost(
-    @GqlCurrentUser() user: User,
+    @CurrentUser() user: User,
     @Args("id", { type: () => Int }) id: number,
   ) {
     const post = await this.postsService.findOne({

@@ -36,7 +36,6 @@
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.5.1",
-    "@nestjs/swagger": "^4.7.13",
     "apollo-server-express": "^2.21.0",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",

@@ -12,7 +12,7 @@ import {
 import { UserInputError } from "apollo-server-express";
 import { PostObject } from "../posts/dto/post.object";
 import { PostsService } from "../posts/posts.service";
-import { GqlCurrentUser } from "../auth/decorator/gql-current-user.decorator";
+import { CurrentUser } from "../auth/decorator/current-user.decorator";
 import { GqlAuthGuard } from "../auth/guards/gql-auth.guard";
 import { UpdateProfileInput } from "./dto/update-profile.input";
 import { UserObject } from "./dto/user.object";
@@ -46,7 +46,7 @@ export class UsersResolver {
   @Mutation(() => UserObject)
   @UseGuards(GqlAuthGuard)
   updateProfile(
-    @GqlCurrentUser() user: User,
+    @CurrentUser() user: User,
     @Args("input") input: UpdateProfileInput,
   ) {
     return this.usersService.update(user.id, input);
@@ -54,7 +54,7 @@ export class UsersResolver {
 
   @Query(() => UserObject)
   @UseGuards(GqlAuthGuard)
-  me(@GqlCurrentUser() user: User) {
+  me(@CurrentUser() user: User) {
     return user;
   }
 

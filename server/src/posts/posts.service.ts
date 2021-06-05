@@ -1,9 +1,8 @@
 import { EntityRepository, FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
-import { CreatePostDto } from "./dto/create-post.dto";
 import { CreatePostInput } from "./dto/create-post.input";
-import { UpdatePostDto } from "./dto/update-post.dto";
+import { UpdatePostInput } from "./dto/update-post.input";
 import { Post } from "./entities/post.entity";
 
 interface FindAllArgs {
@@ -22,10 +21,7 @@ export class PostsService {
     private postsRepository: EntityRepository<Post>,
   ) {}
 
-  async create(
-    authorId: number,
-    createPostInput: CreatePostDto | CreatePostInput,
-  ) {
+  async create(authorId: number, createPostInput: CreatePostInput) {
     const post = this.postsRepository.create({
       author: {
         id: authorId,
@@ -49,7 +45,7 @@ export class PostsService {
     return this.postsRepository.findOne(id, relations);
   }
 
-  async update(id: number, updatePostInput: UpdatePostDto) {
+  async update(id: number, updatePostInput: UpdatePostInput) {
     const post = await this.postsRepository.findOne(id);
     this.postsRepository.assign(post, updatePostInput);
     await this.postsRepository.flush();
