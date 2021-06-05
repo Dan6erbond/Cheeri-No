@@ -1,4 +1,11 @@
-import { Entity, OneToOne, Property } from "@mikro-orm/core";
+import {
+  Cascade,
+  Collection,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  Property,
+} from "@mikro-orm/core";
 import { BaseEntity } from "../../database/entities/base-entity.entity";
 
 @Entity({ tableName: "companies" })
@@ -6,10 +13,15 @@ export class Company extends BaseEntity {
   @Property()
   name: string;
 
-  @OneToOne(() => Company, (company) => company.parentCompany, {
+  @ManyToOne(() => Company, {
     nullable: true,
-    joinColumn: "parent_company_id",
     onDelete: "CASCADE",
+    joinColumn: "parent_company_id",
   })
-  parentCompany?: string;
+  parentCompany?: Company;
+
+  @OneToMany(() => Company, (company) => company.parentCompany, {
+    cascade: [Cascade.REMOVE],
+  })
+  subsidiaries = new Collection<Company>(this);
 }
