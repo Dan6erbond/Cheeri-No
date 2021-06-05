@@ -11,7 +11,6 @@ interface FindAllArgs {
 interface FindOneArgs extends FindAllArgs {
   id?: number;
   username?: string;
-  postId?: number;
 }
 
 @Injectable()
@@ -32,7 +31,7 @@ export class UsersService {
     return this.usersRepository.find({}, relations);
   }
 
-  findOne({ id, username, postId, relations }: FindOneArgs) {
+  findOne({ id, username, relations }: FindOneArgs) {
     if (id) {
       return this.usersRepository.findOne(id, relations);
     } else if (username) {
@@ -40,8 +39,6 @@ export class UsersService {
         { [expr("lower(username)")]: username.toLowerCase() },
         relations,
       );
-    } else if (postId) {
-      return this.usersRepository.findOne({ posts: { id: postId } }, relations);
     } else {
       throw new Error("One of ID, username or post ID must be provided.");
     }

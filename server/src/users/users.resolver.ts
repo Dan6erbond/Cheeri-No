@@ -10,10 +10,9 @@ import {
   Resolver,
 } from "@nestjs/graphql";
 import { UserInputError } from "apollo-server-express";
-import { PostObject } from "../posts/dto/post.object";
-import { PostsService } from "../posts/posts.service";
 import { CurrentUser } from "../auth/decorator/current-user.decorator";
 import { GqlAuthGuard } from "../auth/guards/gql-auth.guard";
+import { ReasonObject } from "../reasons/dto/reason.object";
 import { UpdateProfileInput } from "./dto/update-profile.input";
 import { UserObject } from "./dto/user.object";
 import { User } from "./entities/user.entity";
@@ -21,10 +20,7 @@ import { UsersService } from "./users.service";
 
 @Resolver(() => UserObject)
 export class UsersResolver {
-  constructor(
-    private readonly usersService: UsersService,
-    private postsService: PostsService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Query(() => [UserObject])
   users(@Selections("users", ["posts"]) relations: string[]) {
@@ -58,12 +54,11 @@ export class UsersResolver {
     return user;
   }
 
-  @ResolveField(() => [PostObject])
-  async posts(@Parent() user: User) {
-    if (user.posts.isInitialized()) {
-      return user.posts;
+  @ResolveField(() => [ReasonObject])
+  async reasons(@Parent() user: User) {
+    if (!user.reasons.isInitialized()) {
+      await user.reasons.init();
     }
-    const { id } = user;
-    return this.postsService.findAll({ authorId: id });
+    return user.reasons;
   }
 }

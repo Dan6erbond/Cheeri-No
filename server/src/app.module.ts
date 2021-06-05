@@ -8,6 +8,8 @@ import { AuthModule } from "./auth/auth.module";
 import configuration, { ConfigType } from "./config/configuration";
 import { getConfig } from "./database/helpers";
 import { UsersModule } from "./users/users.module";
+import { CompaniesModule } from './companies/companies.module';
+import { ReasonsModule } from './reasons/reasons.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { UsersModule } from "./users/users.module";
     }),
     UsersModule,
     AuthModule,
+    CompaniesModule,
+    ReasonsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
