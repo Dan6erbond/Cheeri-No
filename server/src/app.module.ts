@@ -2,14 +2,12 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
+import { CompaniesModule } from "./companies/companies.module";
 import configuration, { ConfigType } from "./config/configuration";
 import { getConfig } from "./database/helpers";
+import { ReasonsModule } from "./reasons/reasons.module";
 import { UsersModule } from "./users/users.module";
-import { CompaniesModule } from './companies/companies.module';
-import { ReasonsModule } from './reasons/reasons.module';
 
 @Module({
   imports: [
@@ -32,7 +30,5 @@ import { ReasonsModule } from './reasons/reasons.module';
     CompaniesModule,
     ReasonsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
