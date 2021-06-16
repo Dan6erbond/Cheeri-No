@@ -12,10 +12,15 @@
     "from-red-500",
     "to-yellow-500",
     "p-4",
+    "sm:p-10",
     "items-center",
-    "pb-16",
-    "md:pb-2",
+    "mb-14",
+    "md:mb-0",
     "space-y-2",
+    "flex",
+    "flex-col",
+    "justify-center",
+    "items-center",
   )}
 >
   <span>Built with ❤ by RaviAnand Mohabir</span>
@@ -37,15 +42,3 @@
     <span>GitHub</span>
   </a>
 </footer>
-
-<style lang="postcss">
-  footer {
-    @apply flex flex-col justify-center items-center p-10;
-  }
-
-  @media (min-width: 480px) {
-    footer {
-      @apply py-10 px-0;
-    }
-  }
-</style>
