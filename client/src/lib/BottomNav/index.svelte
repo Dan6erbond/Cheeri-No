@@ -13,10 +13,11 @@
     "bottom-0",
     "right-0",
     "fixed",
-    "p-2",
+    "h-14",
     "transition-transform",
-    "transform md:translate-y-56",
+    "transform md:translate-y-14",
     "justify-evenly",
+    "items-center",
   )}
 >
   <a
